@@ -1,0 +1,9 @@
+[
+    {
+        "model": "app_users.Languages",
+        "pk": 1,
+        "fields": {
+            "name": "Ukraine"
+        }
+    }
+]

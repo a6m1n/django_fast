@@ -7,27 +7,50 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Languages',
+            name="Languages",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
-            name='CustomUser',
+            name="CustomUser",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female')], max_length=1)),
-                ('card_number', models.PositiveIntegerField()),
-                ('expire_date', models.DateField()),
-                ('professional', models.CharField(choices=[('Y', 'Yes'), ('N', 'No')], max_length=1)),
-                ('languages', models.ManyToManyField(to='app_users.Languages')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "gender",
+                    models.CharField(
+                        choices=[("M", "Male"), ("F", "Female")], max_length=1
+                    ),
+                ),
+                ("card_number", models.PositiveIntegerField()),
+                ("expire_date", models.DateField()),
+                (
+                    "professional",
+                    models.CharField(choices=[("Y", "Yes"), ("N", "No")], max_length=1),
+                ),
+                ("languages", models.ManyToManyField(to="app_users.Languages")),
             ],
         ),
     ]

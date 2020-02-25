@@ -24,6 +24,14 @@ class CreateUserView(CreateView):
     form_class = forms.CustomUserCreate
     success_url = "/"
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        formset = forms.LanguageFormset(queryset=models.Languages.objects.all())
+
+        context["formset"] = formset
+        return context
+
 
 class UserUpdate(UpdateView):
     success_url = "/"
@@ -35,8 +43,14 @@ class UserUpdate(UpdateView):
 
 class UserDelete(DeleteView):
     model = models.CustomUser
-    template_name_suffix = '_delete'
-    success_url = reverse_lazy('list_page')
+    template_name_suffix = "_delete"
+    success_url = reverse_lazy("list_page")
 
-    def post(self, request, *args, **kwargs):
-        print(request, kwargs)
+    def get_object(self):
+        new = []
+
+        for k in self.request.POST.keys():
+            if k.isnumeric():
+                new.append(k)
+
+        return self.model.objects.filter(pk__in=new)

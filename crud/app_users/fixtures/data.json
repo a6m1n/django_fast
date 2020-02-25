@@ -1,0 +1,34 @@
+[
+    {
+        "model": "app_users.CustomUser",
+        "pk": 1,
+        "fields": {
+            "name": "test",
+            "gender": "M",
+            "card_number": 23424,
+            "expire_date": "2023-11-23",
+            "professional": "Y"
+        }
+    },
+      {
+        "model": "app_users.CustomUser",
+        "pk": 2,
+        "fields": {
+            "name": "test2",
+            "gender": "F",
+            "card_number": 234224,
+            "expire_date": "2020-11-23",
+            "professional": "N"
+        }
+    },
+      {
+        "model": "app_users.CustomUser",
+        "pk": 3,
+        "fields": {
+            "name": "test",
+            "gender": "M",
+            "professional": "Y"
+        }
+    }
+
+]
