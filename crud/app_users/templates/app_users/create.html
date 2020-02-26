@@ -1,180 +1,205 @@
 {% extends 'app_users/base.html' %}
 {% block title %} Create user  {% endblock %}
 {% block content %}
-
-
-<div class="section ">
-    <div class="container ">
-        <div class="row ">
-            <div class="col-md-12 ">
-                <ul class="breadcrumb ">
-                    <li>
-                        <a href="# ">Home</a>
-                    </li>
-                    <li>
-                        <a href="# ">Tour Leads</a>
-                    </li>
-                    <li class="active ">Add Lead</li>
-                </ul>
+    <div class="section ">
+        <div class="container ">
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <ul class="breadcrumb ">
+                        <li>
+                            <a href="# ">Home</a>
+                        </li>
+                        <li>
+                            <a href="# ">Tour Leads</a>
+                        </li>
+                        <li class="active ">Add Lead</li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div class="row ">
-            <div class="col-md-12 ">
-                {{ form.errors }}
-                <form class="form-horizontal " method="post" role="form ">
-                    {% csrf_token %}
-                    <div class="form-group ">
-                        <div class="col-sm-2 ">
-                            <label for="inputEmail3 " class="control-label ">Name</label>
-                        </div>
-                        <div class="col-sm-10 ">
-                            {{ form.name }}
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <div class="col-sm-2 ">
-                            <label for="gender " class="control-label ">Gender</label>
-                        </div>
-                        <div class="col-sm-10">
-                            {% for f in form.gender %}
-                                {{ f }}
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <div class="col-sm-2 ">
-                            <label for="languages " class="control-label ">Languages</label>
-                        </div>
-                        <div class="col-sm-10" id="list-languages">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="languages" placeholder="Chinese">
-                                <span class="input-group-btn my-add" id="create-block">
-                                    <button class="btn">
-                                        <i class="fa fa-plus fa-fw"></i>Add</button>
-                                </span>
+            <div class="row ">
+                <div class="col-md-12 ">
+                    {{ form.errors }}
+                    <form class="form-horizontal " method="post" role="form ">
+                        {% csrf_token %}
+                        <div class="form-group ">
+                            <div class="col-sm-2 ">
+                                <label for="inputEmail3 " class="control-label ">Name</label>
                             </div>
-                            {% for f in formset %}
+                            <div class="col-sm-10 ">
+                                {{ form.name }}
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-sm-2 ">
+                                <label for="gender " class="control-label ">Gender</label>
+                            </div>
+                            <div class="col-sm-10">
+                                {% for f in form.gender %}
+                                    {{ f }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-sm-2 ">
+                                <label for="languages " class="control-label ">Languages</label>
+                            </div>
+                            <div class="col-sm-10" id="list-languages">
                                 <div class="input-group">
-                                    {% for ff in f %}
-                                        {{ ff }}
-                                    {% endfor %}
-                                    <span class="input-group-btn my-remove">
+                                    <input type="text" class="form-control" id="languages" placeholder="Chinese">
+                                    <span class="input-group-btn my-add" id="create-block">
                                         <button class="btn">
-                                        <i class="fa fa-remove fa-fw"></i>Remove</button>
+                                            <i class="fa fa-plus fa-fw"></i>Add</button>
                                     </span>
                                 </div>
-                            {% endfor %}
+                                {{ formset.management_form }}
+                                {% for f in formset %}
+                                    <div class="input-group">
+                                        {% for ff in f %}
+                                            {{ ff }}
+                                        {% endfor %}
+                                        <span class="input-group-btn my-remove">
+                                            <button class="btn">
+                                            <i class="fa fa-remove fa-fw"></i>Remove</button>
+                                        </span>
+                                    </div>
+                                {% endfor %}
 
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group ">
-                        <div class="col-sm-2 ">
-                            <label for="card " class="control-label ">Card Number</label>
+                        <div class="form-group ">
+                            <div class="col-sm-2 ">
+                                <label for="card " class="control-label ">Card Number</label>
+                            </div>
+                            <div class="col-sm-10 ">
+                                {{ form.card_number }}
+                            </div>
                         </div>
-                        <div class="col-sm-10 ">
-                            {{ form.card_number }}
+                        <div class="form-group ">
+                            <div class="col-sm-2 ">
+                                <label for="date " class="control-label ">Expiry Date</label>
+                            </div>
+                            <div class="col-sm-10 ">
+                                {{ form.expire_date }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group ">
-                        <div class="col-sm-2 ">
-                            <label for="date " class="control-label ">Expiry Date</label>
+                        <div class="form-group ">
+                            <div class="col-sm-2 ">
+                                <label for="pro " class="control-label ">Professional</label>
+                            </div>
+                            <div class="col-sm-10 ">
+                               {% for f in form.professional %}
+                                    {{f}}
+                                {% endfor %}
+                            </div>
                         </div>
-                        <div class="col-sm-10 ">
-                            {{ form.expire_date }}
+                        <div class="form-group ">
+                            <div class="col-sm-offset-2 col-sm-10 ">
+                                <button type="submit " class="btn btn-default ">
+                                    <i class="fa fa-save fa-fw "></i>Submit</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group ">
-                        <div class="col-sm-2 ">
-                            <label for="pro " class="control-label ">Professional</label>
-                        </div>
-                        <div class="col-sm-10 ">
-                           {% for f in form.professional %}
-                                {{f}}
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <div class="col-sm-offset-2 col-sm-10 ">
-                            <button type="submit " class="btn btn-default ">
-                                <i class="fa fa-save fa-fw "></i>Submit</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script language="JavaScript">
-    $('.my-remove').click(function(event) {
-        this.parentNode.remove();
-    });
+    <script language="JavaScript">
 
-    $('#create-block').click(function(event) {
-        let value_in_field_lang = document.getElementById('languages').value;
+        $(document).ready(function() {
 
-        if (value_in_field_lang.length > 4){
-            document.getElementById('languages').value = '';
+            $("#list-languages").on("click", "span.my-remove", function(){
+                this.parentNode.remove();
+            });
 
-            let start_block = document.createElement('div');
-            start_block.className = 'input-group';
+            function set_all_atr_show_field(id, field) {
+                // set input id, value, name
 
-             let input_show = document.createElement("INPUT");
-            input_show.setAttribute("type", "text");
-            input_show.setAttribute("class", "form-control");
-            input_show.setAttribute("maxlength", "255");
-            //id="id_form-0-name"
-            //name="form-0-name"
-            input_show.value = value_in_field_lang;
+                field.setAttribute('name', `form-${id}-language`);
+                field.setAttribute('value', field.value);
+                field.setAttribute('id', `id_form-${id}-language`);
+            }
 
-            let input_hidden = document.createElement("INPUT");
-            input_hidden.setAttribute("type", "hidden");
-            //name, value, id
+            function set_all_atr_hidden_field(id, field) {
+                // set input name, value, id who has type hidden
 
-            let span_to_button = document.createElement('span');
-            span_to_button.setAttribute("class", "input-group-btn my-remove");
+                field.setAttribute('name', `form-${id}-id`);
+                field.setAttribute('value', id+1);
+                field.setAttribute('id', `id_form-${id}-id`);
+            }
 
-            let span_button = document.createElement('button');
-            span_button.setAttribute("class", "btn");
+            function get_new_id(tree) {
+                //GET NUMBER ID
+                let div = tree.querySelector('div:last-child');
+                if (!div){
+                    return 0;
+                }
+                let id = div.firstElementChild.id;
 
-            let span_button_i = document.createElement('i');
-            span_button_i.className = 'fa fa-remove fa-fw';
+                let arrayOfStrings = id.split('-');
 
-            span_button.append(span_button_i);
+                let index = arrayOfStrings[1];
+                let new_id =  Number(index)+1;
+                if (isNaN(new_id)){
+                    return 0;
+                }
+                return new_id;
+            }
 
-            span_button.innerText = 'Remove';
-            span_button.insertBefore(span_button_i, span_button.firstChild);
+            $('#create-block').click(function(event) {
+                // create new block elements
 
-            span_to_button.append(span_button);
+                event.preventDefault();
 
-            start_block.append(input_hidden);
-            start_block.append(input_show);
-            start_block.append(span_to_button);
+                let value_in_field_lang = document.getElementById('languages').value;
 
-            document.getElementById('list-languages').append(start_block);
-        }
+                if (value_in_field_lang.length > 1){
+                    document.getElementById('languages').value = '';
 
-    });
+                    let start_block = document.createElement('div');
+                    start_block.className = 'input-group';
 
-    function genStr(tree, param) {
-        if (param === 'id'){
-            let div = tree.querySelector('div:last-child');
-            let id = div.firstElementChild.id;
+                     let input_show = document.createElement("INPUT");
+                    input_show.setAttribute("type", "text");
+                    input_show.setAttribute("class", "form-control");
+                    input_show.setAttribute("maxlength", "255");
+                    input_show.value = value_in_field_lang;
 
-            let arrayOfStrings = id.split('-');
+                    let input_hidden = document.createElement("INPUT");
+                    input_hidden.setAttribute("type", "hidden");
+                    //name, value, id
 
-            let index = arrayOfStrings[1];
-            let new_id = Number(index)+1;
+                    let span_to_button = document.createElement('span');
+                    span_to_button.setAttribute("class", "input-group-btn my-remove");
 
-            arrayOfStrings.splice(arrayOfStrings.indexOf(index), 1, new_id);
+                    let span_button = document.createElement('button');
+                    span_button.setAttribute("class", "btn");
 
-            return arrayOfStrings.join('-');
-        } else if ( param=== 'name') {
-            console.log('name');
-        }
-    }
+                    let span_button_i = document.createElement('i');
+                    span_button_i.className = 'fa fa-remove fa-fw';
 
-    let block = document.getElementById('list-languages');
-    genStr(block, "name");
+                    span_button.append(span_button_i);
 
-</script>
+                    span_button.innerText = 'Remove';
+                    span_button.insertBefore(span_button_i, span_button.firstChild);
+
+                    span_to_button.append(span_button);
+
+                    start_block.append(input_show);
+                    start_block.append(input_hidden);
+                    start_block.append(span_to_button);
+
+                    let block = document.getElementById('list-languages');
+                    const id_objs = get_new_id(block);
+
+                    block.append(start_block);
+
+                    set_all_atr_show_field(id_objs, input_show);
+                    set_all_atr_hidden_field(id_objs, input_hidden);
+                }
+
+            });
+
+        });
+
+    </script>
 {% endblock %}

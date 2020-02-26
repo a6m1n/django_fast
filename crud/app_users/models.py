@@ -23,8 +23,13 @@ class CustomUser(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     card_number = models.CharField(blank=True, null=True, max_length=15)
     expire_date = models.DateField(blank=True, null=True)
-    languages = models.ManyToManyField(Languages)
+    languages = models.ManyToManyField(Languages, through='LeadLanguages')
     professional = models.CharField(max_length=1, choices=PROFESSIONAL_CHOICES)
 
     def __str__(self):
         return f"name: {self.name}. id:{self.pk}"
+
+
+class LeadLanguages(models.Model):
+    lead = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    language = models.ForeignKey(Languages, on_delete=models.CASCADE)

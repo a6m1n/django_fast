@@ -1,9 +1,10 @@
 import datetime
 
 from django import forms
-from django.forms import ModelForm, modelformset_factory
+from django.forms import ModelForm, modelformset_factory, \
+    inlineformset_factory, BaseInlineFormSet
 
-from .models import CustomUser, Languages
+from .models import CustomUser, Languages, LeadLanguages
 
 
 class FormControlMixin:
@@ -59,6 +60,22 @@ class CustomUserCreate(FormControlMixin, ModelForm):
 
         return card_number
 
+    # def clean_languages(self):
+    #     languages = [Languages.objects.all()]
+    #     # lang2 = [Languages.objects.filter(pk=1)]
+    #     # self.cleaned_data['languages'] = languages
+    #
+    #     # print(self.instance.languages.set(*languages))
+    #     return languages
+
+    # def is_valid(self, *args, **kwargs):
+    #     self.errors
+    #     self.clean_languages()
+    #
+    #     # print(self.cleaned_data)
+    #     # print(self.data)
+    #     return super().is_valid(*args, **kwargs)
+
     def clean_expire_date(self):
         card_number = self.cleaned_data.get("card_number")
         if not card_number:
@@ -83,17 +100,16 @@ class CustomUserCreate(FormControlMixin, ModelForm):
             "gender",
             "card_number",
             "expire_date",
-            "languages",
             "professional",
         ]
 
 
 class LanguageFrom(FormControlMixin, ModelForm):
     class Meta:
-        model = Languages
-        fields = ["name"]
+        model = LeadLanguages
+        fields = ["lead", 'language']
 
 
-LanguageFormset = modelformset_factory(
-    Languages, fields=("name",), extra=0, form=LanguageFrom
+LanguageFormset = inlineformset_factory(
+    CustomUser, LeadLanguages, extra=1, form=LanguageFrom
 )

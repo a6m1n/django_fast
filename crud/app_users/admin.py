@@ -4,3 +4,4 @@ from . import models
 
 admin.site.register(models.Languages)
 admin.site.register(models.CustomUser)
+admin.site.register(models.LeadLanguages)

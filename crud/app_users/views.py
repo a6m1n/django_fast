@@ -10,7 +10,7 @@ class UsersViews(ListView):
     model = models.CustomUser
     context_object_name = "users"
     template_name = "app_users/list.html"
-    paginate_by = 2
+    paginate_by = 10
 
 
 class UserDetailView(DetailView):
@@ -22,23 +22,53 @@ class UserDetailView(DetailView):
 class CreateUserView(CreateView):
     template_name = "app_users/create.html"
     form_class = forms.CustomUserCreate
-    success_url = "/"
+    success_url = reverse_lazy("list_page")
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
 
-        formset = forms.LanguageFormset(queryset=models.Languages.objects.all())
+        formset = forms.LanguageFormset(
+            
+        )
 
         context["formset"] = formset
         return context
 
+    def form_valid(self, form):
+        r = super().form_valid(form)
+
+        formset = forms.LanguageFormset(self.request.POST)
+        if formset.is_valid():
+            formset.instance = self.object
+            formset.save()
+        return r
+
 
 class UserUpdate(UpdateView):
-    success_url = "/"
+    success_url = reverse_lazy("list_page")
     model = models.CustomUser
     template_name_suffix = "_update"
 
     form_class = forms.CustomUserCreate
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        formset = forms.LanguageFormset(
+            instance=self.object
+        )
+
+        context["formset"] = formset
+        return context
+
+    def form_valid(self, form):
+        r = super().form_valid(form)
+
+        formset = forms.LanguageFormset(self.request.POST)
+        if formset.is_valid():
+            formset.instance = self.object
+            formset.save()
+        return r
 
 
 class UserDelete(DeleteView):
