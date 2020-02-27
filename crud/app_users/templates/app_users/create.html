@@ -103,28 +103,56 @@
             </div>
         </div>
     </div>
+ <script type="text/javascript" > var js_list = {{to_js|safe}}; </script>
+
     <script language="JavaScript">
 
         $(document).ready(function() {
 
+            //hide all checkbox delete
+            $('div.input-group input[type=checkbox]').hide();
+
+
+            // display none + checkbox true to delete
+            //simulate operations delete
             $("#list-languages").on("click", "span.my-remove", function(){
-                this.parentNode.remove();
+                event.preventDefault();
+                let block = this.parentNode;
+                let checkbox = block.querySelectorAll('input[type=checkbox]')[0];
+                checkbox.checked = true;
+                block.style.display = "none";
             });
 
-            function set_all_atr_show_field(id, field) {
-                // set input id, value, name
+            function add_options_to_select(select) {
+                let options = {{to_js|safe}};
 
-                field.setAttribute('name', `form-${id}-language`);
-                field.setAttribute('value', field.value);
-                field.setAttribute('id', `id_form-${id}-language`);
+                for (let i = 0; i<options.length; i++){
+                    let opt = document.createElement('option');
+                    opt.value = options[i];
+                    opt.innerHTML = options[i];
+                    select.appendChild(opt);
+                }
             }
 
             function set_all_atr_hidden_field(id, field) {
                 // set input name, value, id who has type hidden
 
-                field.setAttribute('name', `form-${id}-id`);
-                field.setAttribute('value', id+1);
-                field.setAttribute('id', `id_form-${id}-id`);
+                field.setAttribute('name', `leadlanguages_set-${id}-lead`);
+                field.setAttribute('id', `id_leadlanguages_set-${id}-lead`);
+            }
+            function set_all_atr_hidden2_field(id, field) {
+
+                field.setAttribute('name', `leadlanguages_set-${id}-id`);
+                field.setAttribute('id', `id_leadlanguages_set-${id}-id`);
+            }
+
+            function set_all_atr_select_field(id, field) {
+                field.setAttribute('name', `leadlanguages_set-${id}-language`);
+                field.setAttribute('id', `id_leadlanguages_set-${id}-language`);
+            }
+            function set_all_atr_checkbox_field(id, field) {
+                field.setAttribute('name', `leadlanguages_set-${id}-DELETE`);
+                field.setAttribute('id', `id_leadlanguages_set-${id}-DELETE`);
             }
 
             function get_new_id(tree) {
@@ -133,40 +161,50 @@
                 if (!div){
                     return 0;
                 }
+
                 let id = div.firstElementChild.id;
 
                 let arrayOfStrings = id.split('-');
-
                 let index = arrayOfStrings[1];
+
                 let new_id =  Number(index)+1;
                 if (isNaN(new_id)){
                     return 0;
                 }
                 return new_id;
             }
-
             $('#create-block').click(function(event) {
                 // create new block elements
 
                 event.preventDefault();
 
                 let value_in_field_lang = document.getElementById('languages').value;
+                let block = document.getElementById('list-languages');
+                let id = get_new_id(block);
 
-                if (value_in_field_lang.length > 1){
+                if (value_in_field_lang.length > 1) {
                     document.getElementById('languages').value = '';
 
                     let start_block = document.createElement('div');
                     start_block.className = 'input-group';
 
-                     let input_show = document.createElement("INPUT");
-                    input_show.setAttribute("type", "text");
-                    input_show.setAttribute("class", "form-control");
-                    input_show.setAttribute("maxlength", "255");
-                    input_show.value = value_in_field_lang;
-
-                    let input_hidden = document.createElement("INPUT");
+                    let input_hidden = document.createElement("input");
                     input_hidden.setAttribute("type", "hidden");
-                    //name, value, id
+                    set_all_atr_hidden_field(id, input_hidden);
+
+                    let input_hidden2 = document.createElement("input");
+                    input_hidden2.setAttribute("type", "hidden");
+                    set_all_atr_hidden2_field(id, input_hidden2);
+
+                    let select = document.createElement("select");
+                    select.setAttribute("class", "form-control");
+                    set_all_atr_select_field(id, select);
+                    add_options_to_select(select);
+
+                    let checkbox_delete = document.createElement("input");
+                    checkbox_delete.setAttribute("type", "checkbox");
+                    checkbox_delete.style.display = "none";
+                    set_all_atr_checkbox_field(id, checkbox_delete);
 
                     let span_to_button = document.createElement('span');
                     span_to_button.setAttribute("class", "input-group-btn my-remove");
@@ -184,22 +222,73 @@
 
                     span_to_button.append(span_button);
 
-                    start_block.append(input_show);
                     start_block.append(input_hidden);
+                    start_block.append(select);
+                    start_block.append(input_hidden2);
+                    start_block.append(checkbox_delete);
                     start_block.append(span_to_button);
 
                     let block = document.getElementById('list-languages');
-                    const id_objs = get_new_id(block);
 
                     block.append(start_block);
 
-                    set_all_atr_show_field(id_objs, input_show);
-                    set_all_atr_hidden_field(id_objs, input_hidden);
                 }
 
             });
+            // $('#create-block').click(function(event) {
+            //     // create new block elements
+            //
+            //     event.preventDefault();
+            //
+            //     let value_in_field_lang = document.getElementById('languages').value;
+            //
+            //     if (value_in_field_lang.length > 1){
+            //         document.getElementById('languages').value = '';
+            //
+            //         let start_block = document.createElement('div');
+            //         start_block.className = 'input-group';
+            //
+            //         let input_hidden = document.createElement("INPUT");
+            //         input_hidden.setAttribute("type", "hidden");
+            //
+            //          let input_show = document.createElement("select");
+            //         input_show.setAttribute("type", "text");
+            //         input_show.setAttribute("class", "form-control");
+            //         input_show.setAttribute("maxlength", "255");
+            //         input_show.value = value_in_field_lang;
+            //
+            //
+            //         let span_to_button = document.createElement('span');
+            //         span_to_button.setAttribute("class", "input-group-btn my-remove");
+            //
+            //         let span_button = document.createElement('button');
+            //         span_button.setAttribute("class", "btn");
+            //
+            //         let span_button_i = document.createElement('i');
+            //         span_button_i.className = 'fa fa-remove fa-fw';
+            //
+            //         span_button.append(span_button_i);
+            //
+            //         span_button.innerText = 'Remove';
+            //         span_button.insertBefore(span_button_i, span_button.firstChild);
+            //
+            //         span_to_button.append(span_button);
+            //
+            //         start_block.append(input_show);
+            //         start_block.append(input_hidden);
+            //         start_block.append(span_to_button);
+            //
+            //         let block = document.getElementById('list-languages');
+            //         const id_objs = get_new_id(block);
+            //
+            //         block.append(start_block);
+            //
+            //         set_all_atr_show_field(id_objs, input_show);
+            //         set_all_atr_hidden_field(id_objs, input_hidden);
+            //     }
+            //
+            // });
 
         });
-
     </script>
 {% endblock %}

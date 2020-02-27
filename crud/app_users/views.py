@@ -32,6 +32,8 @@ class CreateUserView(CreateView):
         )
 
         context["formset"] = formset
+        objs = models.Languages.objects.all().values_list('name', flat=True)
+        context["to_js"] = list(objs)
         return context
 
     def form_valid(self, form):
