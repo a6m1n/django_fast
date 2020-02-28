@@ -1,3 +1,4 @@
+""" Classic urls django """
 from django.urls import path
 
 from app_users import views

@@ -1,5 +1,6 @@
 {% extends 'app_users/base.html' %}
 {% block title %} List users  {% endblock %}
+{% load static %}
 {% block content %}
     <div class="section">
         <div class="container">
@@ -46,7 +47,7 @@
                                         <a href="#" class="delete_one" name="user-{{user.pk}}" >Delete</a>
                                 </td>
                                 <td>
-                                    <a href="/{{user.pk}}">{{user.name}}</a>
+                                    <a href="{% url 'detail_page' user.pk %}">{{user.name}}</a>
                                 </td>
                                 <td>{{user.gender}}</td>
                                 <td>{{user.card_number}}</td>
@@ -72,39 +73,5 @@
         </div>
     </div>
 
-<script language="JavaScript">
-    var favorite = [];
-
-    $('#select-all').click(function(event) {
-        if(this.checked) {
-            $(':checkbox').each(function() {
-                this.checked = true;
-                favorite.push($(this).attr("name"));
-            });
-        } else {
-            $(':checkbox').each(function() {
-                favorite.splice($(this).attr("name"));
-                this.checked = false;
-            });
-
-        }
-    });
-    
-    $('.check').click(function(event) {
-        if(this.checked) {
-            favorite.push($(this).attr("name"));
-        } else {
-            const index = favorite.indexOf($(this).attr("name"));
-            favorite.splice(index, 1);
-        }
-    });
-
-    $('.delete_one').click(function(event) {
-        document.getElementById($(this).attr("name")).checked = true;
-        document.getElementById('forms').submit();
-});
-
-
-
-</script>
+<script language="JavaScript" src="{% static "js/list.js"%}"></script>
 {% endblock %}

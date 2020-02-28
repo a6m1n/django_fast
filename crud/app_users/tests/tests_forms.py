@@ -1,16 +1,20 @@
+"""Django test forms"""
 from django.test import TestCase
 from app_users import forms
 
 
 class FormsTest(TestCase):
+    """Form test class"""
     fixtures = ["data.json", "languages.json"]
 
     def test_validate_card_number_is_none(self):
+        """Test validate card number. (card number = None) Status =True"""
         data = {"name": "test2", "gender": "M", "professional": "N", "languages": [1]}
         form = forms.CustomUserCreate(data)
         self.assertEqual(form.is_valid(), True)
 
     def test_validate_card_number_not_none(self):
+        """Test validate card number with card number. Status = True"""
         data = {
             "name": "test2",
             "gender": "M",
@@ -23,6 +27,7 @@ class FormsTest(TestCase):
         self.assertEqual(form.is_valid(), True)
 
     def test_validate_card_number_symbol_true(self):
+        """Test validate card number with symbols. Status = True"""
         data = {
             "name": "test2",
             "gender": "M",
@@ -35,6 +40,7 @@ class FormsTest(TestCase):
         self.assertEqual(form.is_valid(), True)
 
     def test_validate_card_number_symbol_false(self):
+        """Test validate card number. Status = False """
         data = {
             "name": "test2",
             "gender": "M",
@@ -49,6 +55,7 @@ class FormsTest(TestCase):
         self.assertEqual(form.errors.get("card_number").as_text(), text_error)
 
     def test_validate_card_number_symbol_lengs_false(self):
+        """Test validate card numbers. Status false.lengh < 8.Status = False"""
         data = {
             "name": "test2",
             "gender": "M",
@@ -62,7 +69,8 @@ class FormsTest(TestCase):
         self.assertEqual(form.is_valid(), False)
         self.assertEqual(form.errors.get("card_number").as_text(), text_error)
 
-    def test_validate_card_number_symbol_lengs_True(self):
+    def test_validate_card_number_symbol_lengs_true(self):
+        """Test validate card with true lengh. Status = True """
         data = {
             "name": "test2",
             "gender": "M",
@@ -75,6 +83,7 @@ class FormsTest(TestCase):
         self.assertEqual(form.is_valid(), True)
 
     def test_validate_expire_date_none_false(self):
+        """Test valid date card. Status = False"""
         data = {
             "name": "test2",
             "gender": "M",
@@ -88,6 +97,7 @@ class FormsTest(TestCase):
         self.assertEqual(form.errors.get("expire_date").as_text(), text_error)
 
     def test_validate_expire_date_not_none_true(self):
+        """Test validate date. Stauts = True"""
         data = {
             "name": "test2",
             "gender": "M",
@@ -100,6 +110,7 @@ class FormsTest(TestCase):
         self.assertEqual(form.is_valid(), True)
 
     def test_validate_expire_date_date_less_false(self):
+        """Test validate expire date less. Status = False"""
         data = {
             "name": "test2",
             "gender": "M",

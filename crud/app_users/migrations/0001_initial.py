@@ -8,39 +8,84 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='CustomUser',
+            name="CustomUser",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female')], max_length=1)),
-                ('card_number', models.CharField(blank=True, max_length=15, null=True)),
-                ('expire_date', models.DateField(blank=True, null=True)),
-                ('professional', models.CharField(choices=[('Y', 'Yes'), ('N', 'No')], max_length=1)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "gender",
+                    models.CharField(
+                        choices=[("M", "Male"), ("F", "Female")], max_length=1
+                    ),
+                ),
+                ("card_number", models.CharField(blank=True, max_length=15, null=True)),
+                ("expire_date", models.DateField(blank=True, null=True)),
+                (
+                    "professional",
+                    models.CharField(choices=[("Y", "Yes"), ("N", "No")], max_length=1),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Languages',
+            name="Languages",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
-            name='LeadLanguages',
+            name="LeadLanguages",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('language', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app_users.Languages')),
-                ('lead', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app_users.CustomUser')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "language",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="app_users.Languages",
+                    ),
+                ),
+                (
+                    "lead",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="app_users.CustomUser",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='customuser',
-            name='languages',
-            field=models.ManyToManyField(through='app_users.LeadLanguages', to='app_users.Languages'),
+            model_name="customuser",
+            name="languages",
+            field=models.ManyToManyField(
+                through="app_users.LeadLanguages", to="app_users.Languages"
+            ),
         ),
     ]

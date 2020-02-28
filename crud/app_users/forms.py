@@ -1,24 +1,21 @@
+"""My custom Django forms"""
 import datetime
-
 from django import forms
-from django.forms import ModelForm, modelformset_factory, \
-    inlineformset_factory, BaseInlineFormSet
-
-from .models import CustomUser, Languages, LeadLanguages
+from django.forms import ModelForm, inlineformset_factory
+from app_users.models import CustomUser, LeadLanguages
 
 
 class FormControlMixin:
     """From control mixin who add class form-control to all fields"""
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         for field in self.fields.values():
             if field.label is not None:
                 field.widget.attrs.update({"class": "form-control"})
 
 
 class CustomUserCreate(FormControlMixin, ModelForm):
+    """ ModelForm with mixin """
     gender = forms.ChoiceField(
         choices=CustomUser.GENDER_CHOICES, widget=forms.RadioSelect
     )
@@ -32,6 +29,7 @@ class CustomUserCreate(FormControlMixin, ModelForm):
         super().__init__(*args, **kwargs)
 
     def clean_card_number(self):
+        """Clear calendar method. Delete with clean expire date"""
         card_number = self.cleaned_data.get("card_number")
         accept_values = [
             "1",
@@ -51,7 +49,7 @@ class CustomUserCreate(FormControlMixin, ModelForm):
         if not card_number:
             return card_number
 
-        if 8 > len(card_number):
+        if len(card_number) < 8:
             raise forms.ValidationError("Length must been: 8-15 symbols ")
 
         for digit in card_number:
@@ -60,23 +58,8 @@ class CustomUserCreate(FormControlMixin, ModelForm):
 
         return card_number
 
-    # def clean_languages(self):
-    #     languages = [Languages.objects.all()]
-    #     # lang2 = [Languages.objects.filter(pk=1)]
-    #     # self.cleaned_data['languages'] = languages
-    #
-    #     # print(self.instance.languages.set(*languages))
-    #     return languages
-
-    # def is_valid(self, *args, **kwargs):
-    #     self.errors
-    #     self.clean_languages()
-    #
-    #     # print(self.cleaned_data)
-    #     # print(self.data)
-    #     return super().is_valid(*args, **kwargs)
-
     def clean_expire_date(self):
+        """Expire date clean method. Delete with clean card_number"""
         card_number = self.cleaned_data.get("card_number")
         if not card_number:
             return None
@@ -105,9 +88,10 @@ class CustomUserCreate(FormControlMixin, ModelForm):
 
 
 class LanguageFrom(FormControlMixin, ModelForm):
+    """LanguageUser form. Lead==user"""
     class Meta:
         model = LeadLanguages
-        fields = ["lead", 'language']
+        fields = ["lead", "language"]
 
 
 LanguageFormset = inlineformset_factory(

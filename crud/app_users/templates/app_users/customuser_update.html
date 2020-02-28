@@ -1,4 +1,5 @@
 {% extends 'app_users/base.html' %}
+{% load static %}
 {% block title %} Change user  {% endblock %}
 {% block content %}
 <div class="section ">
@@ -7,10 +8,10 @@
             <div class="col-md-12 ">
                 <ul class="breadcrumb ">
                     <li>
-                        <a href="# ">Home</a>
+                        <a href="{% url "list_page"%}  ">Home</a>
                     </li>
                     <li>
-                        <a href="# ">Tour Leads</a>
+                        <a href="{% url "list_page"%} ">Tour Leads</a>
                     </li>
                     <li class="active ">Add Lead</li>
                 </ul>
@@ -18,7 +19,7 @@
         </div>
         <div class="row ">
             <div class="col-md-12 ">
-                {{form.errors}}
+                {% include "app_users/_errors.html" %}
                 <form class="form-horizontal " method="post" role="form ">
                     {% csrf_token %}
                     <div class="form-group ">
@@ -44,24 +45,30 @@
                                 <label for="languages " class="control-label ">Languages</label>
                             </div>
                             <div class="col-sm-10" id="list-languages">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="languages" placeholder="Chinese">
-                                    <span class="input-group-btn my-add" id="create-block">
-                                        <button class="btn">
-                                            <i class="fa fa-plus fa-fw"></i>Add</button>
-                                    </span>
-                                </div>
                                 {{ formset.management_form }}
-                                {% for f in formset %}
+                                {% for form in formset %}
+                                    {% if forloop.first %}
+                                        <div class="input-group" id="main-lang">
+                                            {% for form_extra in formset.extra_forms.0 %}
+                                                {{ form_extra }}
+                                            {% endfor %}
+                                                <span class="input-group-btn my-add" id="create-block">
+                                                <button class="btn">
+                                                    <i class="fa fa-plus fa-fw"></i>Add</button>
+                                                </span>
+                                        </div>
+                                    {% endif %}
+                                     {% if not forloop.last %}
                                     <div class="input-group">
-                                        {% for ff in f %}
-                                            {{ ff }}
+                                        {% for ff in form %}
+                                        {{ ff }}
                                         {% endfor %}
                                         <span class="input-group-btn my-remove">
                                             <button class="btn">
                                             <i class="fa fa-remove fa-fw"></i>Remove</button>
                                         </span>
                                     </div>
+                                {% endif %}
                                 {% endfor %}
 
                             </div>
@@ -104,88 +111,6 @@
     </div>
 </div>
 
-<script>
-$(document).ready(function() {
-    $('div.input-group input[type=checkbox]').hide();
-
-    $("#list-languages").on("click", "span.my-remove", function(event){
-        event.preventDefault();
-        let block = this.parentNode;
-        let checkbox = block.querySelectorAll('input[type=checkbox]')[0];
-        checkbox.checked = true;
-        block.style.display = "none";
-    });
-
-    function get_new_id(tree) {
-        //GET NUMBER ID
-        let div = tree.querySelector('div:last-child');
-        if (!div){
-            return 0;
-        }
-
-        let id = div.firstElementChild.id;
-
-        let arrayOfStrings = id.split('-');
-        let index = arrayOfStrings[1];
-
-        let new_id =  Number(index)+1;
-        if (isNaN(new_id)){
-            return 0;
-        }
-        return new_id;
-    }
-
-    $('#create-block').click(function(event) {
-        event.preventDefault();
-        let value_in_field_lang = document.getElementById('languages').value;
-
-
-        let block = document.getElementById('list-languages');
-        let id = get_new_id(block);
-        let to_copy = block.lastElementChild;
-        let new_block = document.createElement('div');
-        new_block.className = 'input-group';
-        new_block.innerHTML = to_copy.innerHTML;
-        update_id(new_block, id);
-        up_total_forms();
-
-        block.append(new_block);
-    });
-
-    function update_id(block, id) {
-        for(let i=0; i<block.childNodes.length; i++) {
-            let elem = block.childNodes[i];
-            if (elem.nodeName.toLowerCase()!=='#text'){
-                up_attr(elem);
-            }
-        }
-    }
-
-    function up_attr(element) {
-       if (element.id){
-            element.id = set_new_attr(element.id);
-        }
-        if (element.name){
-            element.name = set_new_attr(element.name);
-        }
-    }
-
-    function set_new_attr(str_obj) {
-        let arrayOfStrings = str_obj.split('-');
-        let index = arrayOfStrings[1];
-        let new_id =  Number(index)+1;
-        let new_str = `${arrayOfStrings[0]}-${new_id}-${arrayOfStrings[2]}`;
-        return new_str;
-
-    }
-
-    function up_total_forms() {
-        let elem = document.getElementById('id_leadlanguages_set-TOTAL_FORMS');
-        elem.value = Number(elem.value) + 1;
-    }
-
-});
-
-</script>
+<script src="{% static "js/main.js"%}" ></script>
 
 {% endblock %}

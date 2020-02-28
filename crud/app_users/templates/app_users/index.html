@@ -25,15 +25,15 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#"><span>CRM</span></a>
+                    <a class="navbar-brand" href="{% url list_page %}"><span>CRM</span></a>
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-ex-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="#">Home</a>
+                            <a href="{% url list_page %}">Home</a>
                         </li>
                         <li class="active">
-                            <a href="#">Tour Leads</a>
+                            <a href="{% url list_page %}">Tour Leads</a>
                         </li>
                     </ul>
                 </div>
@@ -45,7 +45,7 @@
                     <div class="col-md-12">
                         <ul class="breadcrumb">
                             <li>
-                                <a href="#">Home</a>
+                                <a href="{% url list_page %}">Home</a>
                             </li>
                             <li class="active">Tour Leads</li>
                         </ul>
@@ -146,10 +146,10 @@
                     <div class="col-md-12 ">
                         <ul class="breadcrumb ">
                             <li>
-                                <a href="# ">Home</a>
+                                <a href="{% url list_page %}">Home</a>
                             </li>
                             <li>
-                                <a href="# ">Tour Leads</a>
+                                <a href="{% url list_page %} ">Tour Leads</a>
                             </li>
                             <li class="active ">Add Lead</li>
                         </ul>
@@ -255,10 +255,10 @@
                     <div class="col-md-12 ">
                         <ul class="breadcrumb ">
                             <li>
-                                <a href="# ">Home</a>
+                                <a href="{% url list_page %} ">Home</a>
                             </li>
                             <li>
-                                <a href="# ">Tour Leads</a>
+                                <a href="{% url list_page %}">Tour Leads</a>
                             </li>
                             <li class="active ">John Doe</li>
                         </ul>
