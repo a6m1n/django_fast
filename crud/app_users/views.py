@@ -38,8 +38,8 @@ class CreateUserView(CreateView):
 
     def form_valid(self, form):
         r = super().form_valid(form)
-
         formset = forms.LanguageFormset(self.request.POST)
+
         if formset.is_valid():
             formset.instance = self.object
             formset.save()
@@ -50,7 +50,6 @@ class UserUpdate(UpdateView):
     success_url = reverse_lazy("list_page")
     model = models.CustomUser
     template_name_suffix = "_update"
-
     form_class = forms.CustomUserCreate
 
     def get_context_data(self, *args, **kwargs):
@@ -66,9 +65,8 @@ class UserUpdate(UpdateView):
     def form_valid(self, form):
         r = super().form_valid(form)
 
-        formset = forms.LanguageFormset(self.request.POST)
+        formset = forms.LanguageFormset(self.request.POST, instance=self.object)
         if formset.is_valid():
-            formset.instance = self.object
             formset.save()
         return r
 

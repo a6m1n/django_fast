@@ -113,47 +113,13 @@
             $('div.input-group input[type=checkbox]').hide();
 
 
-            // display none + checkbox true to delete
-            //simulate operations delete
-            $("#list-languages").on("click", "span.my-remove", function(){
+            $("#list-languages").on("click", "span.my-remove", function(event){
                 event.preventDefault();
                 let block = this.parentNode;
                 let checkbox = block.querySelectorAll('input[type=checkbox]')[0];
                 checkbox.checked = true;
                 block.style.display = "none";
             });
-
-            function add_options_to_select(select) {
-                let options = {{to_js|safe}};
-
-                for (let i = 0; i<options.length; i++){
-                    let opt = document.createElement('option');
-                    opt.value = options[i];
-                    opt.innerHTML = options[i];
-                    select.appendChild(opt);
-                }
-            }
-
-            function set_all_atr_hidden_field(id, field) {
-                // set input name, value, id who has type hidden
-
-                field.setAttribute('name', `leadlanguages_set-${id}-lead`);
-                field.setAttribute('id', `id_leadlanguages_set-${id}-lead`);
-            }
-            function set_all_atr_hidden2_field(id, field) {
-
-                field.setAttribute('name', `leadlanguages_set-${id}-id`);
-                field.setAttribute('id', `id_leadlanguages_set-${id}-id`);
-            }
-
-            function set_all_atr_select_field(id, field) {
-                field.setAttribute('name', `leadlanguages_set-${id}-language`);
-                field.setAttribute('id', `id_leadlanguages_set-${id}-language`);
-            }
-            function set_all_atr_checkbox_field(id, field) {
-                field.setAttribute('name', `leadlanguages_set-${id}-DELETE`);
-                field.setAttribute('id', `id_leadlanguages_set-${id}-DELETE`);
-            }
 
             function get_new_id(tree) {
                 //GET NUMBER ID
@@ -163,131 +129,67 @@
                 }
 
                 let id = div.firstElementChild.id;
+                if (!div){
+                    return 0;
+                }
 
                 let arrayOfStrings = id.split('-');
                 let index = arrayOfStrings[1];
 
                 let new_id =  Number(index)+1;
-                if (isNaN(new_id)){
-                    return 0;
-                }
+
                 return new_id;
             }
+
             $('#create-block').click(function(event) {
-                // create new block elements
-
                 event.preventDefault();
-
                 let value_in_field_lang = document.getElementById('languages').value;
+
+
                 let block = document.getElementById('list-languages');
                 let id = get_new_id(block);
+                let to_copy = block.lastElementChild;
+                let new_block = document.createElement('div');
+                new_block.className = 'input-group';
+                new_block.innerHTML = to_copy.innerHTML;
+                update_id(new_block, id);
+                up_total_forms();
 
-                if (value_in_field_lang.length > 1) {
-                    document.getElementById('languages').value = '';
-
-                    let start_block = document.createElement('div');
-                    start_block.className = 'input-group';
-
-                    let input_hidden = document.createElement("input");
-                    input_hidden.setAttribute("type", "hidden");
-                    set_all_atr_hidden_field(id, input_hidden);
-
-                    let input_hidden2 = document.createElement("input");
-                    input_hidden2.setAttribute("type", "hidden");
-                    set_all_atr_hidden2_field(id, input_hidden2);
-
-                    let select = document.createElement("select");
-                    select.setAttribute("class", "form-control");
-                    set_all_atr_select_field(id, select);
-                    add_options_to_select(select);
-
-                    let checkbox_delete = document.createElement("input");
-                    checkbox_delete.setAttribute("type", "checkbox");
-                    checkbox_delete.style.display = "none";
-                    set_all_atr_checkbox_field(id, checkbox_delete);
-
-                    let span_to_button = document.createElement('span');
-                    span_to_button.setAttribute("class", "input-group-btn my-remove");
-
-                    let span_button = document.createElement('button');
-                    span_button.setAttribute("class", "btn");
-
-                    let span_button_i = document.createElement('i');
-                    span_button_i.className = 'fa fa-remove fa-fw';
-
-                    span_button.append(span_button_i);
-
-                    span_button.innerText = 'Remove';
-                    span_button.insertBefore(span_button_i, span_button.firstChild);
-
-                    span_to_button.append(span_button);
-
-                    start_block.append(input_hidden);
-                    start_block.append(select);
-                    start_block.append(input_hidden2);
-                    start_block.append(checkbox_delete);
-                    start_block.append(span_to_button);
-
-                    let block = document.getElementById('list-languages');
-
-                    block.append(start_block);
-
-                }
-
+                block.append(new_block);
             });
-            // $('#create-block').click(function(event) {
-            //     // create new block elements
-            //
-            //     event.preventDefault();
-            //
-            //     let value_in_field_lang = document.getElementById('languages').value;
-            //
-            //     if (value_in_field_lang.length > 1){
-            //         document.getElementById('languages').value = '';
-            //
-            //         let start_block = document.createElement('div');
-            //         start_block.className = 'input-group';
-            //
-            //         let input_hidden = document.createElement("INPUT");
-            //         input_hidden.setAttribute("type", "hidden");
-            //
-            //          let input_show = document.createElement("select");
-            //         input_show.setAttribute("type", "text");
-            //         input_show.setAttribute("class", "form-control");
-            //         input_show.setAttribute("maxlength", "255");
-            //         input_show.value = value_in_field_lang;
-            //
-            //
-            //         let span_to_button = document.createElement('span');
-            //         span_to_button.setAttribute("class", "input-group-btn my-remove");
-            //
-            //         let span_button = document.createElement('button');
-            //         span_button.setAttribute("class", "btn");
-            //
-            //         let span_button_i = document.createElement('i');
-            //         span_button_i.className = 'fa fa-remove fa-fw';
-            //
-            //         span_button.append(span_button_i);
-            //
-            //         span_button.innerText = 'Remove';
-            //         span_button.insertBefore(span_button_i, span_button.firstChild);
-            //
-            //         span_to_button.append(span_button);
-            //
-            //         start_block.append(input_show);
-            //         start_block.append(input_hidden);
-            //         start_block.append(span_to_button);
-            //
-            //         let block = document.getElementById('list-languages');
-            //         const id_objs = get_new_id(block);
-            //
-            //         block.append(start_block);
-            //
-            //         set_all_atr_show_field(id_objs, input_show);
-            //         set_all_atr_hidden_field(id_objs, input_hidden);
-            //     }
-            //
-            // });
+
+            function update_id(block, id) {
+                for(let i=0; i<block.childNodes.length; i++) {
+                    let elem = block.childNodes[i];
+                    if (elem.nodeName.toLowerCase()!=='#text'){
+                        up_attr(elem);
+                    }
+                }
+            }
+
+            function set_new_attr(str_obj) {
+                let arrayOfStrings = str_obj.split('-');
+                let index = arrayOfStrings[1];
+                let new_id =  Number(index)+1;
+                return `${arrayOfStrings[0]}-${new_id}-${arrayOfStrings[2]}`;
+
+            }
+
+            function up_attr(element) {
+               if (element.id){
+                    element.id = set_new_attr(element.id);
+                }
+                if (element.name){
+                    element.name = set_new_attr(element.name);
+                }
+            }
+
+            function up_total_forms() {
+                let elem = document.getElementById('id_leadlanguages_set-TOTAL_FORMS');
+                elem.value = Number(elem.value) + 1;
+            }
+
+
 
         });
     </script>
