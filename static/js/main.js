@@ -9,6 +9,7 @@ $(document).ready(function() {
         block.style.display = "none";
     });
 
+
     function get_new_id(tree) {
         //GET NUMBER ID
         let div = tree.querySelector('div:last-child');

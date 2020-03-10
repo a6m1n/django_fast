@@ -7,7 +7,7 @@ class Languages(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"Name: {self.name}. Id: {self.pk}"
+        return self.name
 
 
 class CustomUser(models.Model):
@@ -31,7 +31,7 @@ class CustomUser(models.Model):
     professional = models.CharField(max_length=1, choices=PROFESSIONAL_CHOICES)
 
     def __str__(self):
-        return f"name: {self.name}. id:{self.pk}"
+        return self.name
 
 
 class LeadLanguages(models.Model):
